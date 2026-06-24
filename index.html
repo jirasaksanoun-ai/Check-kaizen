@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RX KAIZEN ONLINE</title>
+    <title>RX KAIZEN ONLINE | LINE Secure Gateway</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,22 +19,27 @@
     <style>
         body {
             font-family: 'Kanit', sans-serif;
-            background-color: #030712;
-            background-image: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+            background-color: #f8fafc; /* Slate 50 โทนสว่างตามแบบ 5.0 */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+                linear-gradient(rgba(226, 232, 240, 0.6) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
             min-height: 100vh;
-            color: #f3f4f6;
+            color: #334155;
         }
 
+        /* Glassmorphic Card Style (Light-Tech 5.0) */
         .liff-glass {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(6, 182, 212, 0.25);
+            border: 1px solid rgba(99, 102, 241, 0.15);
             border-radius: 24px;
-            box-shadow: 0 0 35px rgba(6, 182, 212, 0.15);
+            box-shadow: 0 15px 35px -5px rgba(148, 163, 184, 0.15);
         }
 
-        /* Loading Ring */
+        /* 5.0 Neon Ring Loader */
         .neon-ring {
             display: inline-block;
             position: relative;
@@ -51,8 +56,8 @@
             border: 5px solid transparent;
             border-radius: 50%;
             animation: ring-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #06b6d4 transparent transparent transparent;
-            filter: drop-shadow(0 0 8px #06b6d4);
+            border-color: #6366f1 transparent transparent transparent;
+            filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.3));
         }
         .neon-ring div:nth-child(1) { animation-delay: -0.45s; }
         .neon-ring div:nth-child(2) { animation-delay: -0.3s; }
@@ -70,30 +75,48 @@
         
         <!-- Logo Header -->
         <div class="flex flex-col items-center">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 mb-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 mb-3">
                 <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
             </div>
-            <h2 class="text-xl font-black text-white tracking-widest uppercase">RX KAIZEN ONLINE</h2>
-            <p class="text-[10px] text-cyan-400 font-bold tracking-widest uppercase mt-0.5">Line Secure Gateway</p>
+            <h2 class="text-xl font-black text-slate-800 tracking-wider">RX KAIZEN ONLINE</h2>
+            <p class="text-[10px] text-indigo-500 font-bold tracking-widest uppercase mt-0.5">LINE Secure Gateway 5.0</p>
         </div>
 
-        <!-- Animated Loader -->
-        <div class="py-4">
-            <div class="neon-ring"><div></div><div></div><div></div><div></div></div>
+        <!-- Section: Loading -->
+        <div id="loadingSection" class="space-y-6">
+            <div class="py-4">
+                <div class="neon-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="space-y-2">
+                <p id="statusText" class="text-sm text-slate-600 font-semibold tracking-wide">กำลังเชื่อมต่อ LINE Account ...</p>
+                <p class="text-[11px] text-slate-400 font-light">ระบบตรวจพบอุปกรณ์พกพา กำลังพากลับสู่ระบบอย่างปลอดภัย</p>
+            </div>
         </div>
 
-        <!-- Status Message -->
-        <div class="space-y-2">
-            <p id="statusText" class="text-sm text-slate-300 font-semibold tracking-wide">กำลังเชื่อมต่อ LINE Account ...</p>
-            <p class="text-[11px] text-slate-500 font-light">ระบบจะเปลี่ยนเส้นทางไปยังหน้าแอปหลักโดยอัตโนมัติภายในเสี้ยววินาที</p>
+        <!-- Section: Error / Config Diagnostic Panel (ระบบช่วยเหลือเมื่อเกิดข้อผิดพลาด) -->
+        <div id="errorSection" class="hidden text-left space-y-4 animate-fade-in bg-rose-50/50 p-4 border border-rose-100 rounded-2xl">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
+                <span>🚨</span>
+                <span>ตรวจพบข้อผิดพลาดของระบบ</span>
+            </div>
+            <p id="errorMsgText" class="text-xs text-rose-500 leading-relaxed font-medium">รายละเอียดของข้อผิดพลาดจะปรากฏที่นี่</p>
+            
+            <div id="diagnosticGuide" class="text-[11px] text-slate-500 space-y-2 border-t border-rose-100 pt-3">
+                <p class="font-bold text-slate-700">คำแนะนำสำหรับผู้พัฒนา:</p>
+                <ul class="list-decimal pl-4 space-y-1">
+                    <li>เปิดแก้ไขไฟล์ <span class="font-mono text-indigo-600">redirect.html</span></li>
+                    <li>แก้ไขค่าตัวแปร <span class="font-mono bg-white px-1 border border-slate-200 rounded">LIFF_ID</span> ด้วยรหัสจริง</li>
+                    <li>แก้ไขค่าตัวแปร <span class="font-mono bg-white px-1 border border-slate-200 rounded">GAS_WEBAPP_URL</span> ด้วยลิงก์ Web App หลัก</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Fallback Action -->
-        <div id="fallbackAction" class="hidden pt-4">
-            <a id="targetLink" href="#" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-xs font-bold rounded-xl shadow-lg transition-transform hover:scale-[1.02] active:scale-95">
-                คลิกที่นี่หากไม่มีการเปลี่ยนเส้นทาง
+        <div id="fallbackAction" class="hidden pt-2">
+            <a id="targetLink" href="#" class="inline-flex w-full items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-xs font-bold rounded-xl shadow-lg transition-transform hover:scale-[1.02] active:scale-95">
+                <span>คลิกที่นี่หากหน้าจอไม่เปลี่ยนไป</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                 </svg>
@@ -103,57 +126,92 @@
 
     <!-- UI LIFF Javascript Controller -->
     <script>
-        // === CONFIGURATIONS (กรุณาแทนที่ค่าด้านล่างนี้ด้วยค่าใช้งานจริงของคุณ) ===
-        const LIFF_ID = "2009669941-KijLKaRA"; // แทนที่ด้วย LIFF ID ที่ตั้งค่าไว้ใน LINE Developers
-        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; // แทนที่ด้วย URL Web App ที่ได้จาก Deploy ใน GAS
+        // ==========================================
+        //  กรุณาแก้ไขข้อมูลการกำหนดค่าที่นี่ (Configurations)
+        // ==========================================
+        const LIFF_ID = "2009669941-KijLKaRA"; // นำ LIFF ID จาก LINE Developers Console มาใส่ตรงนี้
+        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; // นำ URL หลังทำการ Deploy Web App ของ Google Sheets มาใส่ตรงนี้
 
         const statusText = document.getElementById('statusText');
         const fallbackAction = document.getElementById('fallbackAction');
         const targetLink = document.getElementById('targetLink');
+        const loadingSection = document.getElementById('loadingSection');
+        const errorSection = document.getElementById('errorSection');
+        const errorMsgText = document.getElementById('errorMsgText');
 
         /**
-         * เริ่มการทำงานของ LINE LIFF
+         * เริ่มทำงานการยืนยันตัวตน LINE
          */
         async function initializeLiff() {
             try {
-                if (LIFF_ID === "YOUR_LINE_LIFF_ID_HERE" || GAS_WEBAPP_URL === "YOUR_GAS_WEBAPP_DEPLOY_URL_HERE") {
-                    throw new Error("ระบบยังตั้งค่า LIFF_ID หรือ Web App URL ไม่สมบูรณ์");
+                // 1. ดึงพารามิเตอร์ผ่าน URL (มีประโยชน์อย่างยิ่งในการดีบั๊กทดสอบแบบไม่ต้องแก้โค้ดบ่อยๆ)
+                const urlParams = new URLSearchParams(window.location.search);
+                let activeLiffId = urlParams.get('liffId') || LIFF_ID;
+                let activeGasUrl = urlParams.get('gas') || GAS_WEBAPP_URL;
+
+                // ตรวจเช็คเพื่อป้องกันไม่ได้แก้ไขข้อมูลเริ่มต้น
+                if (activeLiffId === "YOUR_LINE_LIFF_ID_HERE") activeLiffId = "";
+                if (activeGasUrl === "YOUR_GAS_WEBAPP_DEPLOY_URL_HERE") activeGasUrl = "";
+
+                // หากยังไม่ได้กำหนดค่าความปลอดภัย ให้แสดงการแนะนำบนหน้าจอทันที
+                if (!activeLiffId || !activeGasUrl) {
+                    showError(
+                        "ไม่สามารถดำเนินงานต่อได้เนื่องจากการตั้งค่าความปลอดภัยไม่สมบูรณ์ " +
+                        "(ยังไม่ได้ระบุค่าตัวแปร LIFF ID หรือ URL ปลายทางของแอปหลัก)"
+                    );
+                    return;
                 }
 
-                await liff.init({ liffId: LIFF_ID });
+                statusText.textContent = "กำลังเชื่อมโยง LINE SDK...";
+                
+                // เริ่มต้นการใช้งาน LIFF
+                await liff.init({ liffId: activeLiffId });
 
+                // เช็คสถานะการเข้าสู่ระบบใน LINE
                 if (!liff.isLoggedIn()) {
-                    statusText.textContent = "กำลังนำทางไปยืนยันตัวตน LINE...";
+                    statusText.textContent = "กำลังนำทางไปล็อกอิน LINE...";
                     liff.login();
                     return;
                 }
 
-                statusText.textContent = "ดึงข้อมูลบัญชี LINE สำเร็จ...";
+                statusText.textContent = "ดึงข้อมูลส่วนบุคคลของคุณ...";
                 const profile = await liff.getProfile();
                 const userId = profile.userId;
 
-                // แนบ Line User ID เป็นพารามิเตอร์ส่งกลับไปยัง GAS Web App หลัก
-                const redirectTarget = `${GAS_WEBAPP_URL}?uid=${encodeURIComponent(userId)}`;
+                if (!userId) {
+                    throw new Error("ไม่สามารถอ่านสิทธิ์รหัส LINE User ID ได้");
+                }
+
+                // แนบ Line User ID (uid) เข้าหน้าเว็บหลักใน Google Apps Script
+                const redirectTarget = `${activeGasUrl}?uid=${encodeURIComponent(userId)}`;
                 
-                statusText.textContent = "ยืนยันสิทธิ์เรียบร้อย กำลังนำเข้าสู่ระบบ...";
+                statusText.textContent = "ยืนยันสิทธิ์เสร็จสิ้น กำลังพากลับเข้าสู่ระบบ...";
                 
-                // นำผู้ใช้เข้าสู่ระบบหลัก
+                // บังคับเปลี่ยนหน้าไปยังเป้าหมาย
                 targetLink.href = redirectTarget;
                 window.location.replace(redirectTarget);
 
-                // หากระบบเบราว์เซอร์บล็อกการย้ายหน้า ให้แสดงปุ่ม fallback
+                // หากหน้าจอค้างให้โชว์ปุ่ม Fallback สำรอง
                 setTimeout(() => {
                     fallbackAction.classList.remove('hidden');
-                }, 1500);
+                }, 1800);
 
             } catch (err) {
                 console.error(err);
-                statusText.innerHTML = `<span class="text-rose-400">🚨 ข้อผิดพลาด: ${err.message || err}</span>`;
-                statusText.classList.add('px-4', 'text-center');
+                showError(err.message || err);
             }
         }
 
-        // เริ่มต้นกระบวนการเมื่อหน้าเว็บพร้อมทำงาน
+        /**
+         * แสดงรายละเอียดข้อผิดพลาดด้วย Diagnostic Panel
+         */
+        function showError(message) {
+            loadingSection.classList.add('hidden');
+            errorSection.classList.remove('hidden');
+            errorMsgText.textContent = message;
+        }
+
+        // เริ่มโหลดสคริปต์เมื่อหน้าจอเรนเดอร์เรียบร้อย
         window.addEventListener('load', initializeLiff);
     </script>
 </body>
