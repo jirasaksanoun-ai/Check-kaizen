@@ -1,228 +1,277 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RX KAIZEN ONLINE | LINE Secure Gateway</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Kanit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- LINE LIFF Official SDK CDN (เวอร์ชัน 2.1 มีเสถียรภาพสูงสุดในการเชื่อมต่อ) -->
-    <script src="https://static.liff.line.me/21/liff.js"></script>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE RX KAIZEN</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <style>
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: #f8fafc; /* Slate 50 โทนสว่างลักชัวรี */
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
-                linear-gradient(rgba(226, 232, 240, 0.5) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
-            min-height: 100vh;
-            color: #334155;
-        }
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-        /* Glassmorphism Card Style (Light-Tech 5.0) */
-        .liff-glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 28px;
-            box-shadow: 0 20px 40px -15px rgba(148, 163, 184, 0.15);
-        }
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: radial-gradient(circle at center, #0d1b2a 0%, #010811 100%);
+      overflow: hidden;
+    }
+    
+    /* Neon Glowing Elements */
+    .neon-glow-emerald {
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    
+    .neon-text-emerald {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
 
-        /* 5.0 Breathing Neon Ring Loader */
-        .neon-ring {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-        .neon-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border: 5px solid transparent;
-            border-radius: 50%;
-            animation: ring-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #6366f1 transparent transparent transparent;
-            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
-        }
-        .neon-ring div:nth-child(1) { animation-delay: -0.45s; }
-        .neon-ring div:nth-child(2) { animation-delay: -0.3s; }
-        .neon-ring div:nth-child(3) { animation-delay: -0.15s; }
-        
-        @keyframes ring-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    .neon-glow-cyan {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+    }
+
+    /* Glassmorphism Panel */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    /* Advanced Biometric Scan Animations */
+    .scanner-line {
+      animation: scan 3s ease-in-out infinite;
+    }
+    
+    @keyframes scan {
+      0%, 100% { top: 0%; opacity: 0.3; }
+      50% { top: 100%; opacity: 1; }
+    }
+
+    .rotate-slow {
+      animation: spin-slow 12s linear infinite;
+    }
+    .rotate-reverse {
+      animation: spin-reverse 8s linear infinite;
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-reverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    /* Pulse wave */
+    .pulse-ring {
+      animation: ring-pulse 2s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+    }
+
+    @keyframes ring-pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center p-4">
+<body class="h-full text-slate-100 antialiased flex items-center justify-center p-4">
 
-    <div class="w-full max-w-sm liff-glass p-8 text-center space-y-6 animate-slide-up">
-        
-        <!-- Logo Header -->
-        <div class="flex flex-col items-center">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/15 mb-3">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-            </div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">RX KAIZEN</h2>
-            <p class="text-[10px] text-indigo-500 font-extrabold tracking-widest uppercase mt-2">LINE Secure Gateway 5.0</p>
-        </div>
+  <!-- Main Background Orbs -->
+  <div class="absolute w-[400px] h-[400px] rounded-full bg-emerald-500/10 blur-[120px] -top-20 -left-20"></div>
+  <div class="absolute w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[150px] -bottom-30 -right-20"></div>
 
-        <!-- Section: Loading -->
-        <div id="loadingSection" class="space-y-6">
-            <div class="py-4">
-                <div class="neon-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
-            <div class="space-y-2">
-                <p id="statusText" class="text-sm text-slate-600 font-bold tracking-wide">กำลังระบุสิทธิ์พนักงานด้วย LINE...</p>
-                <p class="text-[11px] text-slate-400 font-medium">ระบบกำลังตรวจสอบความปลอดภัยเพื่อนำท่านกลับสู่แดชบอร์ดหลัก</p>
-            </div>
-        </div>
+  <!-- Gateway Container Card -->
+  <div class="relative w-full max-w-md glass-panel rounded-[40px] p-8 text-center shadow-2xl overflow-hidden">
+    <!-- Top Decorative Line -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-cyan-500"></div>
 
-        <!-- Section: Error Diagnostics (จะแสดงขึ้นมาก็ต่อเมื่อเกิดข้อผิดพลาดในการตั้งค่าระบบเท่านั้น) -->
-        <div id="errorSection" class="hidden text-left space-y-4 bg-rose-50/60 p-5 border border-rose-100 rounded-2xl">
-            <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
-                <span class="text-base">🚨</span>
-                <span>ตรวจพบข้อผิดพลาดของระบบ</span>
-            </div>
-            <p id="errorMsgText" class="text-xs text-rose-500 leading-relaxed font-semibold">รายละเอียดของข้อผิดพลาด</p>
-            
-            <div id="diagnosticGuide" class="text-[11px] text-slate-500 space-y-2 border-t border-rose-100/80 pt-3">
-                <p class="font-bold text-slate-700">📌 แนวทางการตรวจสอบเบื้องต้น:</p>
-                <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed font-medium">
-                    <li>เปิดตรวจสอบค่าตัวแปรในไฟล์ <span class="font-mono text-indigo-600">redirect.html</span> บน GitHub</li>
-                    <li>ตรวจสอบความถูกต้องของ <span class="font-mono bg-white px-1 border border-slate-200 rounded text-indigo-600">LIFF ID</span> ใน LINE Developers Console</li>
-                    <li>ตรวจสอบว่าได้ทำการ Publish (ทำให้ใช้งานได้) เว็บแอป GAS เป็นเวอร์ชันล่าสุดแล้วหรือไม่</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Fallback Action Button (ทำงานเมื่อการเด้งอัตโนมัติของเบราว์เซอร์ขัดข้อง) -->
-        <div id="fallbackAction" class="hidden pt-2">
-            <a id="targetLink" href="#" class="inline-flex w-full items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-xs font-black rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95">
-                <span>คลิกตรงนี้เพื่อเชื่อมต่อระบบทันที</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                </svg>
-            </a>
-        </div>
+    <!-- Header Section -->
+    <div class="mb-8 relative z-10">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <span class="text-[11px] font-bold text-emerald-400 tracking-[0.2em] uppercase neon-text-emerald">Loading... ⏳</span>
+      </div>
+      <h1 class="text-2xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        LINE LIFF RX KAIZEN
+      </h1>
+      <p class="text-xs text-slate-400 mt-1">กำลังเชื่อมต่อกับฐานข้อมูลหลัก</p>
     </div>
 
-    <!-- UI LIFF Javascript Controller -->
-    <script>
-        // ==========================================
-        //  ข้อมูลการกำหนดค่าที่ฝังตัวแปรใช้งานจริงเรียบร้อยแล้ว
-        // ==========================================
-        const LIFF_ID = "2009669941-KijLKaRA"; 
-        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; 
+    <!-- Central Biometric Scanner Area -->
+    <div class="relative w-48 h-48 mx-auto my-10 flex items-center justify-center z-10">
+      
+      <!-- Pulse Rings -->
+      <div class="absolute inset-0 rounded-full border border-emerald-500/20 pulse-ring"></div>
+      
+      <!-- Outer Dial (Rotates Clockwise) -->
+      <div class="absolute inset-2 rounded-full border-2 border-dashed border-cyan-500/30 rotate-slow"></div>
+      
+      <!-- Inner Dial (Rotates Counter-Clockwise) -->
+      <div class="absolute inset-6 rounded-full border border-spaced border-emerald-500/40 rotate-reverse"></div>
+      
+      <!-- Core Fingerprint / Shield Unit -->
+      <div class="w-28 h-28 rounded-full bg-slate-900/60 flex items-center justify-center neon-glow-emerald relative overflow-hidden">
+        <i class="fa-solid fa-fingerprint text-4xl text-emerald-400 animate-pulse"></i>
+        <!-- Horizontal Laser Scanning Line -->
+        <div class="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent scanner-line"></div>
+      </div>
+    </div>
 
-        const statusText = document.getElementById('statusText');
-        const fallbackAction = document.getElementById('fallbackAction');
-        const targetLink = document.getElementById('targetLink');
-        const loadingSection = document.getElementById('loadingSection');
-        const errorSection = document.getElementById('errorSection');
-        const errorMsgText = document.getElementById('errorMsgText');
+    <!-- Progress / Status Messages -->
+    <div class="space-y-3 mb-8 relative z-10">
+      <div class="flex justify-center items-center gap-2">
+        <i id="status-icon" class="fa-solid fa-circle-notch fa-spin text-emerald-400 text-sm"></i>
+        <p id="status-title" class="text-sm font-bold text-slate-200">สแกนข้อมูลอัตลักษณ์พนักงาน...</p>
+      </div>
+      <p id="status-desc" class="text-xs text-slate-400 max-w-[280px] mx-auto leading-relaxed">
+        ดึงข้อมูลสิทธิ์และระบุตัวตนทางเทคโนโลยีความปลอดภัยเพื่อเข้าชมสรุปสถิติผลงาน Kaizen 2568
+      </p>
+    </div>
 
-        /**
-         * เริ่มทำงานการยืนยันตัวตน LINE
-         */
-        async function initializeLiff() {
-            try {
-                // ดักจับการรันใน Google Apps Script Iframe Sandbox (สคริปต์ LINE SDK จะโดนบล็อกการรันใน Sandbox)
-                if (window.self !== window.top) {
-                    throw new Error(
-                        "หน้านี้ตรวจพบว่าถูกเรียกใช้ใน Iframe Sandbox ของ Google Apps Script! " +
-                        "ซึ่งตัวไลบรารีของ LINE SDK จะไม่สามารถผ่านสิทธิ์เพื่อวิเคราะห์ข้อมูลพนักงานได้ " +
-                        "กรุณานำไฟล์ redirect.html นี้ไปเรียกใช้ผ่าน URL บน GitHub Pages โดยตรงนอก iframe เพื่อให้ระบบทำงานได้เสถียร 100%"
-                    );
-                }
+    <!-- Fallback / Error Console Box -->
+    <div id="error-console" class="hidden bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-left text-xs mb-6 relative z-10">
+      <div class="flex gap-2.5 text-rose-400 font-bold mb-1">
+        <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+        <span>ระบบตรวจพบข้อผิดพลาด (SDK Alert)</span>
+      </div>
+      <p id="error-message" class="text-slate-300 leading-normal pl-6">ไม่สามารถเข้าถึงชุดคำสั่งข้อมูล LIFF ได้สำเร็จ</p>
+    </div>
 
-                if (LIFF_ID === "YOUR_LINE_LIFF_ID_HERE" || GAS_WEBAPP_URL === "YOUR_GAS_WEBAPP_DEPLOY_URL_HERE") {
-                    throw new Error("ยังไม่ได้กำหนดค่าความปลอดภัยจริงของระบบ LIFF_ID หรือ GAS_WEBAPP_URL ในไฟล์ redirect.html");
-                }
+    <!-- Secondary Safe Direct Button (Normally Hidden) -->
+    <div id="manual-action" class="hidden relative z-10">
+      <button onclick="triggerFallbackRedirect()" 
+        class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white py-3.5 px-6 rounded-2xl text-xs font-bold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2">
+        <span>คลิกเพื่อเดินทางไปยังระบบหลัก</span>
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      </button>
+    </div>
 
-                statusText.textContent = "กำลังเชื่อมต่อ LINE Secure Gateway...";
-                
-                // เริ่มต้นการใช้งาน LIFF
-                await liff.init({ liffId: LIFF_ID });
+    <!-- Footer Privacy/PDPA Tag -->
+    <div class="mt-8 text-[10px] text-slate-500 flex items-center justify-center gap-1.5 relative z-10">
+      <i class="fa-solid fa-shield-halved text-emerald-500/70"></i>
+      <span>คุ้มครองสิทธิ์ความปลอดภัยส่วนบุคคล PDPA มั่นคง 100%</span>
+    </div>
+  </div>
 
-                // เช็คสถานะการเข้าสู่ระบบในแอป LINE
-                if (!liff.isLoggedIn()) {
-                    statusText.textContent = "กำลังนำทางไปยืนยันตัวตนบน LINE...";
-                    liff.login();
-                    return;
-                }
+  <script>
+    // ==========================================
+    // CONFIGURATION - แก้ไขค่าใช้งานจริงของ RX Kaizen Online
+    // ==========================================
+    const LIFF_ID = "2009669941-KijLKaRA"; 
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; 
+    
+    let resolvedUserId = null;
 
-                statusText.textContent = "กำลังดึงข้อมูล LINE User ID...";
-                const profile = await liff.getProfile();
-                const userId = profile.userId;
+    document.addEventListener("DOMContentLoaded", function() {
+      if (LIFF_ID === "YOUR_LIFF_ID_HERE") {
+        showError("ยังไม่ได้ตั้งค่า LIFF ID", "กรุณานำรหัส LIFF ID จาก LINE Developer Console มากำหนดในสคริปต์ redirect.html ก่อนทดลองใช้งานจริง");
+        return;
+      }
+      
+      initLINEGateway();
+    });
 
-                if (!userId) {
-                    throw new Error("ไม่สามารถวิเคราะห์และเรียกดูรหัส LINE User ID จากบัญชีนี้ได้");
-                }
-
-                // ปรับปรุงการต่อพารามิเตอร์แบบปลอดภัยอัจฉริยะ (Smart Parameter Constructor)
-                const parameterSeparator = GAS_WEBAPP_URL.includes('?') ? '&' : '?';
-                const redirectTarget = `${GAS_WEBAPP_URL}${parameterSeparator}uid=${encodeURIComponent(userId)}`;
-                
-                statusText.textContent = "เชื่อมต่อสิทธิ์พนักงานเรียบร้อย! กำลังสลับหน้าต่าง...";
-                
-                // อัปเดตลิงก์ไปยังปุ่มสำรอง
-                targetLink.href = redirectTarget;
-                
-                // บังคับข้ามการล็อกอิน โดยเปิดแอปพลิเคชันเข้าสู่ภายนอก (External Browser)
-                // เพื่อหลีกเลี่ยงข้อจำกัดการใช้งาน iframe Sandbox ของ LINE และ Google ในเวลาเดียวกัน
-                if (liff.isInClient()) {
-                    liff.openWindow({
-                        url: redirectTarget,
-                        external: true // บังคับใช้งานเบราว์เซอร์ของตัวเครื่อง (Safari/Chrome)
-                    });
-                    
-                    setTimeout(() => {
-                        liff.closeWindow(); // ปิดหน้าต่างไลน์เดิมลงทันทีเพื่อความปลอดภัยของระบบ
-                    }, 400);
-                } else {
-                    window.location.replace(redirectTarget);
-                }
-
-                // แสดงปุ่มสำรอง (Fallback Button) เพื่อให้กดเองหากเบราว์เซอร์บางรุ่นบล็อกป็อปอัพอัตโนมัติ
-                setTimeout(() => {
-                    fallbackAction.classList.remove('hidden');
-                }, 1500);
-
-            } catch (err) {
-                console.error(err);
-                showError(err.message || err);
-            }
+    /**
+     * ดึงสิทธิ์ผู้ใช้งานผ่าน LINE LIFF SDK
+     */
+    async function initLINEGateway() {
+      try {
+        updateStatus("กำลังประมวลผล LINE SDK...", "กำลังเรียกใช้โมดูลแลกเปลี่ยนข้อมูลผ่าน LINE Core Client API");
+        
+        // 1. ตรวจสอบและเริ่มต้นระบบ LIFF
+        await liff.init({ liffId: LIFF_ID });
+        
+        // 2. ตรวจสอบการเข้าใช้ หากยังไม่ได้ล็อกอินให้เปิดฟอร์มล็อกอิน LINE
+        if (!liff.isLoggedIn()) {
+          updateStatus("กำลังร้องขอสิทธิ์...", "พนักงานยังไม่ได้รับสิทธิ์ความปลอดภัย กำลังเปิดการล็อกอินระบบ LINE");
+          liff.login();
+          return;
         }
 
-        /**
-         * แสดงรายละเอียดข้อผิดพลาดด้วย Diagnostic Panel
-         */
-        function showError(message) {
-            loadingSection.classList.add('hidden');
-            errorSection.classList.remove('hidden');
-            errorMsgText.textContent = message;
+        // 3. ดึงประวัติข้อมูลโปรไฟล์พนักงาน
+        updateStatus("ดึงประวัติผู้ใช้สำเร็จ...", "กำลังดึงข้อมูล Token พนักงานเพื่อสร้างลิงก์การเข้าใช้งานแบบไร้รหัสผ่าน");
+        const profile = await liff.getProfile();
+        resolvedUserId = profile.userId;
+
+        if (resolvedUserId) {
+          // 4. ส่งผ่านข้อมูลอย่างรวดเร็วไปยังระบบหลัก GAS Web App ด้วยพารามิเตอร์ userId (อ้างอิงตรงกับ code.gs)
+          executeFinalRedirect(resolvedUserId);
+        } else {
+          throw new Error("ระบบดึงข้อมูล User ID ไม่ถูกต้องหรือว่างเปล่า");
         }
 
-        // เริ่มโหลดกระบวนการล็อกอินอัตโนมัติเมื่อหน้าจอพร้อม
-        window.addEventListener('load', initializeLiff);
-    </script>
+      } catch (err) {
+        console.error("LIFF Gateway Error: ", err);
+        showError("การตรวจสอบสิทธิ์ความปลอดภัยล้มเหลว", err.message || JSON.stringify(err));
+      }
+    }
+
+    /**
+     * ดำเนินการเปลี่ยนเส้นทางไปยัง Google Apps Script Web App
+     */
+    function executeFinalRedirect(userId) {
+      updateStatus("ยืนยันตัวตนแล้ว!", "การตรวจสอบสิทธิ์เสร็จสมบูรณ์ กำลังพาท่านไปสู่หน้าแดชบอร์ดสะสมผลงาน Kaizen...");
+      
+      const icon = document.getElementById("status-icon");
+      icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg animate-bounce";
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("userId", userId); // ส่งพารามิเตอร์หลัก userId ไปยัง code.gs 
+      
+      const destination = `${GAS_WEB_APP_URL}?${urlParams.toString()}`;
+      
+      setTimeout(() => {
+        window.location.replace(destination);
+      }, 600); 
+    }
+
+    /**
+     * ฟังก์ชันกรณีฉุกเฉินให้พนักงานกดนำทางด้วยตนเอง
+     */
+    window.triggerFallbackRedirect = function() {
+      if (resolvedUserId) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("userId", resolvedUserId);
+        window.location.href = `${GAS_WEB_APP_URL}?${urlParams.toString()}`;
+      } else {
+        window.location.href = GAS_WEB_APP_URL;
+      }
+    }
+
+    // --- Helper Utilities ฝั่งการปรับเปลี่ยน UI ---
+
+    function updateStatus(title, desc) {
+      document.getElementById("status-title").textContent = title;
+      document.getElementById("status-desc").textContent = desc;
+    }
+
+    function showError(title, message) {
+      document.getElementById("status-title").textContent = title;
+      document.getElementById("status-title").className = "text-sm font-bold text-rose-400";
+      document.getElementById("status-desc").textContent = "ระบบหยุดกระบวนการดีดส่งข้อมูลชั่วคราวเพื่อป้องกันสิทธิ์ความปลอดภัย";
+      
+      document.getElementById("status-icon").className = "fa-solid fa-circle-xmark text-rose-500 text-sm";
+      
+      const consoleBox = document.getElementById("error-console");
+      consoleBox.classList.remove("hidden");
+      document.getElementById("error-message").textContent = message;
+
+      document.getElementById("manual-action").classList.remove("hidden");
+    }
+  </script>
+
 </body>
 </html>
