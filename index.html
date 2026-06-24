@@ -13,15 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- LINE LIFF Official SDK CDN (อัปเดตเป็น liff.js เพื่อความเสถียรสูงสุดและแก้ไขปัญหา Error split) -->
+    <!-- LINE LIFF Official SDK CDN (เวอร์ชัน 2.1 มีเสถียรภาพสูงสุดในการเชื่อมต่อ) -->
     <script src="https://static.liff.line.me/21/liff.js"></script>
 
     <style>
         body {
             font-family: 'Kanit', sans-serif;
-            background-color: #f8fafc; /* Slate 50 โทนสว่างพรีเมียม */
+            background-color: #f8fafc; /* Slate 50 โทนสว่างลักชัวรี */
             background-image: 
-                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
                 linear-gradient(rgba(226, 232, 240, 0.5) 1px, transparent 1px), 
                 linear-gradient(90deg, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
@@ -29,7 +29,7 @@
             color: #334155;
         }
 
-        /* Glassmorphic Card Style (Light-Tech 5.0) */
+        /* Glassmorphism Card Style (Light-Tech 5.0) */
         .liff-glass {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -57,7 +57,7 @@
             border-radius: 50%;
             animation: ring-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             border-color: #6366f1 transparent transparent transparent;
-            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
         }
         .neon-ring div:nth-child(1) { animation-delay: -0.45s; }
         .neon-ring div:nth-child(2) { animation-delay: -0.3s; }
@@ -90,12 +90,12 @@
                 <div class="neon-ring"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="space-y-2">
-                <p id="statusText" class="text-sm text-slate-600 font-bold tracking-wide">กำลังเริ่มต้นระบุสิทธิ์พนักงาน...</p>
-                <p class="text-[11px] text-slate-400 font-medium">ระบบกำลังตรวจสอบบัญชีอย่างปลอดภัยด้วยโปรโตคอล LINE</p>
+                <p id="statusText" class="text-sm text-slate-600 font-bold tracking-wide">กำลังระบุสิทธิ์พนักงานด้วย LINE...</p>
+                <p class="text-[11px] text-slate-400 font-medium">ระบบกำลังตรวจสอบความปลอดภัยเพื่อนำท่านกลับสู่แดชบอร์ดหลัก</p>
             </div>
         </div>
 
-        <!-- Section: Error / Config Diagnostic Panel (ระบบช่วยดีบั๊กแสดงแนวทางการแก้ไข) -->
+        <!-- Section: Error Diagnostics (จะแสดงขึ้นมาก็ต่อเมื่อเกิดข้อผิดพลาดในการตั้งค่าระบบเท่านั้น) -->
         <div id="errorSection" class="hidden text-left space-y-4 bg-rose-50/60 p-5 border border-rose-100 rounded-2xl">
             <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
                 <span class="text-base">🚨</span>
@@ -104,19 +104,19 @@
             <p id="errorMsgText" class="text-xs text-rose-500 leading-relaxed font-semibold">รายละเอียดของข้อผิดพลาด</p>
             
             <div id="diagnosticGuide" class="text-[11px] text-slate-500 space-y-2 border-t border-rose-100/80 pt-3">
-                <p class="font-bold text-slate-700">📌 แนวทางการแก้ไขสำหรับผู้พัฒนา:</p>
+                <p class="font-bold text-slate-700">📌 แนวทางการตรวจสอบเบื้องต้น:</p>
                 <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed font-medium">
-                    <li>เปิดตรวจสอบไฟล์ <span class="font-mono text-indigo-600">redirect.html</span> บน GitHub</li>
-                    <li>แก้ไขค่าตัวแปร <span class="font-mono bg-white px-1 border border-slate-200 rounded text-indigo-600">LIFF_ID</span> ด้วยรหัสจริงจาก LINE Developers</li>
-                    <li>แก้ไขค่าตัวแปร <span class="font-mono bg-white px-1 border border-slate-200 rounded text-indigo-600">GAS_WEBAPP_URL</span> ด้วยลิงก์ Deployment ล่าสุด</li>
+                    <li>เปิดตรวจสอบค่าตัวแปรในไฟล์ <span class="font-mono text-indigo-600">redirect.html</span> บน GitHub</li>
+                    <li>ตรวจสอบความถูกต้องของ <span class="font-mono bg-white px-1 border border-slate-200 rounded text-indigo-600">LIFF ID</span> ใน LINE Developers Console</li>
+                    <li>ตรวจสอบว่าได้ทำการ Publish (ทำให้ใช้งานได้) เว็บแอป GAS เป็นเวอร์ชันล่าสุดแล้วหรือไม่</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Fallback Action -->
+        <!-- Fallback Action Button (ทำงานเมื่อการเด้งอัตโนมัติของเบราว์เซอร์ขัดข้อง) -->
         <div id="fallbackAction" class="hidden pt-2">
             <a id="targetLink" href="#" class="inline-flex w-full items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white text-xs font-black rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95">
-                <span>คลิกตรงนี้เพื่อไปต่อทันที</span>
+                <span>คลิกตรงนี้เพื่อเชื่อมต่อระบบทันที</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                 </svg>
@@ -127,10 +127,10 @@
     <!-- UI LIFF Javascript Controller -->
     <script>
         // ==========================================
-        //  กรุณาแก้ไขข้อมูลการกำหนดค่าที่นี่ (Configurations)
+        //  ข้อมูลการกำหนดค่าที่ฝังตัวแปรใช้งานจริงเรียบร้อยแล้ว
         // ==========================================
-        const LIFF_ID = "2009669941-KijLKaRA"; // นำ LIFF ID จาก LINE Developers Console มาใส่ตรงนี้
-        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; // นำ URL หลังทำการ Deploy Web App ของ Google Sheets มาใส่ตรงนี้
+        const LIFF_ID = "2009669941-KijLKaRA"; 
+        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZ6ZRBZQHztwtWGWCvKWO7w_O912P0Rpl46PhlaJwaectrW_YnafTIvtzQfUq0vW1x/exec"; 
 
         const statusText = document.getElementById('statusText');
         const fallbackAction = document.getElementById('fallbackAction');
@@ -144,21 +144,27 @@
          */
         async function initializeLiff() {
             try {
-                // ดึงค่า config จาก URL ก่อน (เผื่อใช้ระบบทดสอบ) หรือใช้ค่าคงที่ด้านบน
-                const urlParams = new URLSearchParams(window.location.search);
-                const activeLiffId = urlParams.get('liffId') || LIFF_ID;
-                const activeGasUrl = urlParams.get('gasUrl') || GAS_WEBAPP_URL;
-
-                if (activeLiffId === "YOUR_LINE_LIFF_ID_HERE" || activeGasUrl === "YOUR_GAS_WEBAPP_DEPLOY_URL_HERE") {
-                    throw new Error("ยังไม่ได้กำหนดค่าความปลอดภัย LIFF_ID หรือ GAS_WEBAPP_URL กรุณาตรวจสอบโค้ดในไฟล์ redirect.html");
+                // ดักจับการรันใน Google Apps Script Iframe Sandbox (สคริปต์ LINE SDK จะโดนบล็อกการรันใน Sandbox)
+                if (window.self !== window.top) {
+                    throw new Error(
+                        "หน้านี้ตรวจพบว่าถูกเรียกใช้ใน Iframe Sandbox ของ Google Apps Script! " +
+                        "ซึ่งตัวไลบรารีของ LINE SDK จะไม่สามารถผ่านสิทธิ์เพื่อวิเคราะห์ข้อมูลพนักงานได้ " +
+                        "กรุณานำไฟล์ redirect.html นี้ไปเรียกใช้ผ่าน URL บน GitHub Pages โดยตรงนอก iframe เพื่อให้ระบบทำงานได้เสถียร 100%"
+                    );
                 }
 
-                statusText.textContent = "กำลังเชื่อมโยง LINE Secure API...";
-                await liff.init({ liffId: activeLiffId });
+                if (LIFF_ID === "YOUR_LINE_LIFF_ID_HERE" || GAS_WEBAPP_URL === "YOUR_GAS_WEBAPP_DEPLOY_URL_HERE") {
+                    throw new Error("ยังไม่ได้กำหนดค่าความปลอดภัยจริงของระบบ LIFF_ID หรือ GAS_WEBAPP_URL ในไฟล์ redirect.html");
+                }
+
+                statusText.textContent = "กำลังเชื่อมต่อ LINE Secure Gateway...";
+                
+                // เริ่มต้นการใช้งาน LIFF
+                await liff.init({ liffId: LIFF_ID });
 
                 // เช็คสถานะการเข้าสู่ระบบในแอป LINE
                 if (!liff.isLoggedIn()) {
-                    statusText.textContent = "กำลังนำทางไปยืนยันสิทธิ์กับ LINE...";
+                    statusText.textContent = "กำลังนำทางไปยืนยันตัวตนบน LINE...";
                     liff.login();
                     return;
                 }
@@ -168,14 +174,14 @@
                 const userId = profile.userId;
 
                 if (!userId) {
-                    throw new Error("ไม่สามารถเรียกดูสิทธิ์ LINE User ID ได้สำเร็จ");
+                    throw new Error("ไม่สามารถวิเคราะห์และเรียกดูรหัส LINE User ID จากบัญชีนี้ได้");
                 }
 
                 // ปรับปรุงการต่อพารามิเตอร์แบบปลอดภัยอัจฉริยะ (Smart Parameter Constructor)
-                const parameterSeparator = activeGasUrl.includes('?') ? '&' : '?';
-                const redirectTarget = `${activeGasUrl}${parameterSeparator}uid=${encodeURIComponent(userId)}`;
+                const parameterSeparator = GAS_WEBAPP_URL.includes('?') ? '&' : '?';
+                const redirectTarget = `${GAS_WEBAPP_URL}${parameterSeparator}uid=${encodeURIComponent(userId)}`;
                 
-                statusText.textContent = "ตรวจสอบสิทธิ์สำเร็จ! กำลังเปิดเบราว์เซอร์หลัก...";
+                statusText.textContent = "เชื่อมต่อสิทธิ์พนักงานเรียบร้อย! กำลังสลับหน้าต่าง...";
                 
                 // อัปเดตลิงก์ไปยังปุ่มสำรอง
                 targetLink.href = redirectTarget;
@@ -189,7 +195,7 @@
                     });
                     
                     setTimeout(() => {
-                        liff.closeWindow(); // ปิดหน้าต่างไลน์เดิมลงทันทีเพื่อสุขอนามัยของระบบ
+                        liff.closeWindow(); // ปิดหน้าต่างไลน์เดิมลงทันทีเพื่อความปลอดภัยของระบบ
                     }, 400);
                 } else {
                     window.location.replace(redirectTarget);
@@ -215,7 +221,7 @@
             errorMsgText.textContent = message;
         }
 
-        // เริ่มโหลดกระบวนการล็อกอินอัตโนมัติ
+        // เริ่มโหลดกระบวนการล็อกอินอัตโนมัติเมื่อหน้าจอพร้อม
         window.addEventListener('load', initializeLiff);
     </script>
 </body>
